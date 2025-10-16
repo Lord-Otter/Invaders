@@ -45,7 +45,7 @@ public sealed class Scene
             }
         }
 
-        for (int i = entities.Count - 1; i >= 0; i++)
+        for (int i = entities.Count - 1; i >= 0; i--)
         {
             entities[i].Update(this, deltaTime);
         }
