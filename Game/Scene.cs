@@ -1,3 +1,4 @@
+using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices;
 using SFML.Graphics;
 using SFML.System;
@@ -10,12 +11,16 @@ public sealed class Scene
 {
     private List<Entity> entities = new List<Entity>();
     public readonly AssetManager AssetManager = new AssetManager();
-    public readonly GameManager GameManager = new GameManager();
+    //public readonly EventManager eventManager = new EventManager();
 
-    public void Spawn(Entity entity)
+    public void Spawn(Entity entity, Vector2f? position = null)
     {
         entities.Add(entity);
         entity.Create(this);
+        if(position.HasValue)
+        {
+            entity.Position = position.Value;   
+        }
     }
 
     public void Clear()
@@ -23,31 +28,30 @@ public sealed class Scene
         for (int i = entities.Count - 1; i >= 0; i--)
         {
             Entity entity = entities[i];
-            if (entity.DestroyOnLoad)
-            {
-                entities.RemoveAt(i);
-                entity.Destroy(this);
-            }
+            entities.RemoveAt(i);
+            entity.OnDestroy(this);  
         }
     }
 
     public void UpdateAll(float deltaTime)
     {
+        for (int i = entities.Count - 1; i >= 0; i--)
+        {
+            entities[i].Update(this, deltaTime);
+        }
+        
         for (int i = 0; i < entities.Count;)
         {
+            Entity entity = entities[i];
             if (entities[i].isDead)
             {
                 entities.RemoveAt(i);
+                entity.OnDestroy(this);
             }
             else
             {
                 i++;
             }
-        }
-
-        for (int i = entities.Count - 1; i >= 0; i--)
-        {
-            entities[i].Update(this, deltaTime);
         }
     }
 
@@ -58,21 +62,21 @@ public sealed class Scene
             entity.Render(target);
         }
     }
-    
-        public IEnumerable<Entity> FindIntersects(FloatRect bounds)
+
+    public IEnumerable<Entity> FindIntersects(Entity self)
     {
-        int lastEntity = entities.Count - 1;
-        for (int i = lastEntity - 1; i >= 0; i--)
+        foreach (Entity other in entities)
         {
-            Entity entity = entities[i];
-            if (entity.isDead)
-            {
+            if (other == self || other.isDead || other.tag == self.tag || other.tag == "Background")
                 continue;
-            }
-            if (entity.Bounds.Intersects(bounds))
-            {
-                yield return entity;
-            }
+
+            float distanceX = self.Position.X - other.Position.X;
+            float distanceY = self.Position.Y - other.Position.Y;
+            float distanceSq = distanceX * distanceX + distanceY * distanceY;
+            float combinedRadius = self.CollisionRadius + other.CollisionRadius;
+
+            if (distanceSq <= combinedRadius * combinedRadius)
+                yield return other;
         }
     }
 }

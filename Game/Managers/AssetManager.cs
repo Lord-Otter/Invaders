@@ -24,6 +24,7 @@ public class AssetManager
             return cached;
         }
         Texture texture = new Texture($"assets/{name}.png");
+        texture.Smooth = false;
         textures.Add(name, texture);
         return texture;
     }

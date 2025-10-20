@@ -5,7 +5,10 @@ using SFML.Window;
 
 namespace Invaders;
 
-public class EnemyUFO() : Actor("Enemy")
+public class EnemyUFO : Actor
 {
-    
+    public EnemyUFO(string tag) : base("invaders", tag)
+    {
+        
+    }
 }

@@ -7,11 +7,11 @@ namespace Invaders;
 
 public abstract class SceneBase
 {
-    protected readonly Scene Scene;
+    protected readonly Scene scene;
 
     protected SceneBase(Scene scene)
     {
-        Scene = scene;
+        this.scene = scene;
     }
 
     public virtual void OnEnter() { }

@@ -5,7 +5,10 @@ using SFML.Window;
 
 namespace Invaders;
 
-public abstract class Projectile(string tag) : Entity("invaders", tag)
+public abstract class Projectile : Entity
 {
-    
+    protected Projectile(string textureName, string tag) : base(textureName, tag)
+    {
+        
+    }
 }

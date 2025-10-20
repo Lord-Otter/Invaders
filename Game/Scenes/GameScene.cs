@@ -8,7 +8,10 @@ public class GameScene : SceneBase
 {
     private readonly SceneManager sceneManager;
     private readonly RenderWindow window;
+    private GameGUI gui = null!;
+    private GameManager gameManager = null!;
     private bool gameOver = false;
+    private bool isPaused = false;
 
     public GameScene(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene)
     {
@@ -18,22 +21,26 @@ public class GameScene : SceneBase
 
     public override void OnEnter()
     {
-        Scene.Clear();
-        Scene.Spawn(new Player());
+        gui = new GameGUI(scene, sceneManager, window);
+        gui.OnEnter();
+        gameManager = new GameManager(scene, sceneManager, window, gui);
+        gameManager.Initialize();
     }
 
     public override void Update(float deltaTime)
     {
-        Scene.UpdateAll(deltaTime);
+        scene.UpdateAll(deltaTime);
+        gui.Update(deltaTime);
+        gameManager.Update(deltaTime);
 
         if (gameOver)
         {
-            sceneManager.LoadScene(new GameOverScene(Scene, sceneManager, window));
+            sceneManager.LoadScene(new GameOverScene(scene, sceneManager, window));
         }
     }
     
     public override void Render(RenderTarget target)
     {
-        Scene.RenderAll(target);
+        scene.RenderAll(target);
     }
 }

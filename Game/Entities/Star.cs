@@ -5,7 +5,10 @@ using SFML.Window;
 
 namespace Invaders;
 
-public class Star() : Projectile("Background")
+public class Star : Entity
 {
-
+    public Star(string tag) : base("invaders", tag)
+    {
+        
+    }
 }
