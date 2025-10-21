@@ -1,31 +1,11 @@
-{ "Name": "AAA", "Score": 1 }
-{ "Name": "BBB", "Score": 2500 }
-{ "Name": "CCC", "Score": 1800 }
-{ "Name": "CCC", "Score": 1799 }
-{ "Name": "CCC", "Score": 1897 }
-{ "Name": "Lord Otter", "Score": 1894 }
-{ "Name": "CCC", "Score": 1890 }
-{ "Name": "CCC", "Score": 1885 }
-{ "Name": "CCC", "Score": 1884 }
-{ "Name": "CCC", "Score": 1880 }
-{ "Name": "CCC", "Score": 1840 }
-{ "Name": "CCC", "Score": 1800 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
-{ "Name": "CCC", "Score": 1740 }
+{"Name":"AAA","Score":15000}
+{"Name":"BBB","Score":12500}
+{"Name":"CCC","Score":10000}
+{"Name":"DDD","Score":7500}
+{"Name":"EEE","Score":6000}
+{"Name":"FFF","Score":5000}
+{"Name":"GGG","Score":4000}
+{"Name":"HHH","Score":3000}
+{"Name":"III","Score":2000}
+{"Name":"JJJ","Score":1000}
+{"Name":"KKK","Score":500}

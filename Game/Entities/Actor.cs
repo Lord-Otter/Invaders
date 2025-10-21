@@ -8,15 +8,22 @@ namespace Invaders;
 public abstract class Actor : Entity
 {
     protected float shootCooldown;
-    protected float shootTimer;
-
-    public float iFramesTimer { get; private set; } = 0f;    
+    protected float shootTimer;   
 
     protected Actor(string textureName, string tag) : base(textureName, tag)
     {
         
     }
+
+    public override void Update(Scene scene, float deltaTime)
+    {
+        base.Update(scene, deltaTime);
+
+        
+    }
     
+
+
     protected virtual void Shooting(Scene scene, float deltaTime)
     {
         if (shootTimer > 0)

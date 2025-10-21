@@ -11,8 +11,8 @@ public class GameGUI : GUIBase
 {
     private readonly SceneManager sceneManager;
     private readonly GameScene gameScene;
-    private readonly Scene scene;
-    private readonly RenderWindow window;
+    private new readonly Scene scene;
+    private new readonly RenderWindow window;
 
     // Fonts
     private Font titleFont = null!;

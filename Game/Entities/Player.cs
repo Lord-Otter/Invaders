@@ -11,7 +11,8 @@ public class Player : Actor
 {
     private GameManager gameManger;
     private Vector2f playerDirection = new Vector2f(0, -1);
-
+    private float iFramesTimer = 0f;
+    private float iFramesDuration = 3f;
 
     public Player(string tag, GameManager gameManager) : base("invaders", tag)
     {
@@ -22,7 +23,7 @@ public class Player : Actor
         damage = 3;
         speed = 400f;
 
-        shootCooldown = 0.1f;
+        shootCooldown = 0.175f;
     }
 
     public override Vector2f MovementDirection
@@ -48,12 +49,40 @@ public class Player : Actor
 
         Movement();
         Shooting(scene, deltaTime);
+        IFrames(deltaTime);
+    }
+
+    private void IFrames(float deltaTime)
+    {
+        if(iFramesTimer > 0f)
+        {
+            iFramesTimer -= deltaTime;
+            if (iFramesTimer > 0f)
+            {
+                sprite.Color = new Color(255, 255, 255, 100);
+            }
+            else
+            {
+                sprite.Color = new Color(255, 255, 255, 255);
+            }
+        }
     }
 
     protected override void CollideWith(Scene scene, Entity other)
     {
+        if(iFramesTimer > 0)
+        {
+            return;
+        }
         base.CollideWith(scene, other);
         gameManger.HealthUpdate(health);
+        
+        iFramesTimer = iFramesDuration;
+    }
+
+    protected override void CollisionCheck(Scene scene)
+    {
+        base.CollisionCheck(scene);
     }
 
     public override void OnDestroy(Scene scene)
@@ -70,8 +99,8 @@ public class Player : Actor
         
         if(Keyboard.IsKeyPressed(Space) && shootTimer <= 0)
         {
-            base.Shoot(scene, new Vector2f(-25, 10));
-            base.Shoot(scene, new Vector2f(25, 10));
+            base.Shoot(scene, new Vector2f(-25, 20));
+            base.Shoot(scene, new Vector2f(25, 20));
             //Play shooting sounds effect
             shootTimer = shootCooldown;
         }

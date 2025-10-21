@@ -85,9 +85,9 @@ public abstract class Entity
     public virtual void Update(Scene scene, float deltaTime)
     {
         IsAliveCheck();
-        Position += MovementDirection * speed * deltaTime;
         CollisionCheck(scene);
         ScreenBoundsCheck(scene);
+        Position += MovementDirection * speed * deltaTime;
     }
     
     public virtual void IsAliveCheck()
@@ -119,7 +119,7 @@ public abstract class Entity
     {
         target.Draw(sprite);
 
-        DrawDebugHitbox(target);
+        //DrawDebugHitbox(target);
     }
 
     protected virtual void CollisionCheck(Scene scene)

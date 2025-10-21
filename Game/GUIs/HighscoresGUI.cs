@@ -59,19 +59,19 @@ public class HighscoresGUI : GUIBase
         string pageText = $"{currentPage}/{maxPages}";
 
         titleText = MakeText("Highscores!", font, 75, textColor,
-                Program.screenW / 2f, 200);
+                        Program.screenW / 2f, 200);
 
         pageNumberText = MakeText(pageText, font, 50, textColor,
                         Program.screenW / 2f, Program.screenH - 200);
 
         rightArrow = MakeText(">", arrowFont, 75, buttonColor,
-                Program.screenW / 2f + 100, pageNumberText.Position.Y, new Vector2f(-1, 0));
+                        Program.screenW / 2f + 100, pageNumberText.Position.Y, new Vector2f(-1, 0));
 
         leftArrow = MakeText("<", arrowFont, 75, buttonColor,
-                Program.screenW / 2f - 100, pageNumberText.Position.Y, new Vector2f(1, 0));
+                        Program.screenW / 2f - 100, pageNumberText.Position.Y, new Vector2f(1, 0));
 
         backText = MakeText("Back", font, 50, buttonColor,
-                Program.screenW / 2f, Program.screenH - 100);     
+                        Program.screenW / 2f, Program.screenH - 100);     
     }
 
     private void ScoreList(int pageNumber, out int maxPages)
@@ -105,7 +105,7 @@ public class HighscoresGUI : GUIBase
                 }
 
                 Text nameText = MakeText(entry.Name, font, 50, textColor,
-                        Program.screenW / 2f - 200f, 300 + (i - (10 * (pageNumber - 1)) - 1) * 50, new Vector2f(-1, 0));
+                        Program.screenW / 2f - 250f, 300 + (i - (10 * (pageNumber - 1)) - 1) * 50, new Vector2f(-1, 0));
                 scoreTexts.Add(nameText);
 
                 Text rankText = MakeText($"{i}.", font, 50, textColor,
@@ -113,7 +113,7 @@ public class HighscoresGUI : GUIBase
                 scoreTexts.Add(rankText);
 
                 Text scoreText = MakeText(entry.Score.ToString(), font, 50, textColor,
-                        Program.screenW / 2f + 200, nameText.Position.Y, new Vector2f(1, 0));
+                        Program.screenW / 2f + 250, nameText.Position.Y, new Vector2f(1, 0));
                 scoreTexts.Add(scoreText);
             }
             catch

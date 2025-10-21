@@ -13,13 +13,14 @@ public class GameManager
     public readonly GameGUI gui;
 
     private float elapsedTime;
-    private float minSpawnCooldown = 3;
-    private float maxSpawnCooldown = 6;
+    private float minSpawnCooldown;
+    private float maxSpawnCooldown;
     public int enemyShipCounter;
     public int enemyUFOCounter;
-    private int hardCap = 100;
+    public int enemiesKilledCounter;
+    private int enemyCap = 20;
     private int currentScore;
-    private bool gameOver;
+    private float scoreTimer;
 
     private readonly Random rng = new Random();
     private float enemySpawnTimer = 1f;
@@ -33,6 +34,15 @@ public class GameManager
     }
     public void Initialize()
     {
+        elapsedTime = 0;
+        scoreTimer = 0;
+        currentScore = 0;
+        enemyShipCounter = 0;
+        enemyUFOCounter = 0;
+        minSpawnCooldown = 2;
+        maxSpawnCooldown = 5;
+        enemiesKilledCounter = 0;
+
         scene.Clear();
         scene.Spawn(new Player("Ally", this), new Vector2f(Program.screenW / 2f, Program.screenH - 100));
     }
@@ -40,7 +50,30 @@ public class GameManager
     public void Update(float deltaTime)
     {
         elapsedTime += deltaTime;
+        IncScoreTimer(deltaTime);
+        UpdateSpawnRate();
         Spawner(deltaTime);
+    }
+
+    private void UpdateSpawnRate()
+    {
+        float difficultyFactor = enemiesKilledCounter / 5f;
+
+        minSpawnCooldown = MathF.Max(2 - difficultyFactor * 0.3f, 0.5f);
+        maxSpawnCooldown = MathF.Max(5 - difficultyFactor * 0.3f, 1f);
+    }
+
+    private void IncScoreTimer(float deltaTime)
+    {
+        scoreTimer += deltaTime;
+
+        if(scoreTimer >= 1f)
+        {
+            int secondsPassed = (int)scoreTimer;
+            currentScore += 10 * secondsPassed;
+            gui.UpdateScoreText(currentScore);
+            scoreTimer -= secondsPassed;
+        }
     }
 
     public void HealthUpdate(int currentHealth)
@@ -61,7 +94,7 @@ public class GameManager
     private void Spawner(float deltaTime)
     {
         enemySpawnTimer -= deltaTime;
-        if(enemySpawnTimer <= 0f && (enemyShipCounter + enemyUFOCounter <= hardCap))
+        if(enemySpawnTimer <= 0f && (enemyShipCounter + enemyUFOCounter < enemyCap))
         {
             SpawnEnemyShip();
             enemySpawnTimer = (float)(new Random().NextDouble() * (maxSpawnCooldown - minSpawnCooldown) + minSpawnCooldown);

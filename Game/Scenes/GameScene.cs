@@ -30,6 +30,7 @@ public class GameScene : SceneBase
 
     public override void OnExit()
     {
+        gui.OnExit();
         window.KeyPressed -= OnKeyPressed;
     }
 

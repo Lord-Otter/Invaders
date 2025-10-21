@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -14,8 +15,8 @@ public class EnemyShip : Actor
     private static readonly Random rngShoot = new Random();
     private static readonly Random rng = new Random();
     protected Vector2f movementDirection = new Vector2f(0f, -1f);
-    private float minShootCooldown = 2f;
-    private float maxShootCooldown = 5f;
+    private float minShootCooldown = 1f;
+    private float maxShootCooldown = 3f;
 
     public EnemyShip(string tag, GameManager gameManager) : base("invaders", tag)
     {
@@ -23,7 +24,7 @@ public class EnemyShip : Actor
 
         health = 40;
         maxHealth = health;
-        pointValue = 10;
+        pointValue = 100;
         damage = 1;
         speed = 125f;
 
@@ -40,7 +41,6 @@ public class EnemyShip : Actor
         get => movementDirection;
         set
         {
-            // Skip normalization — store the vector directly
             movementDirection = value;
         }
     }
@@ -59,9 +59,12 @@ public class EnemyShip : Actor
 
     public override void OnDestroy(Scene scene)
     {
+        scene.Spawn(new Explosion(this));
         gameManager.enemyShipCounter--;
+        gameManager.enemiesKilledCounter++;
         gameManager.PointUpdate(pointValue);
         Console.WriteLine($"--{gameManager.enemyShipCounter}");
+        Console.WriteLine($"++{gameManager.enemiesKilledCounter}");
     }
 
     protected override void Shooting(Scene scene, float deltaTime)
@@ -69,7 +72,7 @@ public class EnemyShip : Actor
         base.Shooting(scene, deltaTime);
         if (shootTimer <= 0)
         {
-            base.Shoot(scene, new Vector2f(0, 15));
+            base.Shoot(scene, new Vector2f(0, 40));
             shootTimer = (float)(rngShoot.NextDouble() * (maxShootCooldown - minShootCooldown) + minShootCooldown);
         }
     }
@@ -79,14 +82,19 @@ public class EnemyShip : Actor
         MovementDirection = new Vector2f(flipX, 1);
         FacingDirection = MovementDirection;
     }
-    
+
     private void WrapAround()
     {
-        Position = new Vector2f(Position.X, - sprite.TextureRect.Height * 2);
+        Position = new Vector2f(Position.X, -sprite.TextureRect.Height * 2);
         MovementDirection = new Vector2f(MovementDirection.X, 1);
         FacingDirection = MovementDirection;
     }
 
+    protected override void CollideWith(Scene scene, Entity other)
+    {
+        base.CollideWith(scene, other);
+    }
+    
     protected override void ScreenBoundsCheck(Scene scene, float marginX, float marginY)
     {
         marginX = 1;
@@ -103,7 +111,7 @@ public class EnemyShip : Actor
         {
             ChangeDirection(-1);
         }
-        if(bottom && MovementDirection.Y > 0)
+        if (bottom && MovementDirection.Y > 0)
         {
             WrapAround();
         }
