@@ -13,6 +13,7 @@ public abstract class Entity
     protected Sprite sprite = new Sprite();
     private string textureName;
     protected int health = 1, maxHealth = 1;
+    protected int pointValue = 0;
     protected int damageTakenBuffer;
     protected int damage;
     public bool isDead;
@@ -22,6 +23,7 @@ public abstract class Entity
     private Vector2f facingDirection = new Vector2f(0f, -1f);
 
     public float CollisionRadius { get; protected set; }
+    protected Vector2f collisionOffset = new Vector2f(0, 0);
 
     protected Entity(string textureName, string tag)
     {
@@ -67,6 +69,8 @@ public abstract class Entity
         set => sprite.Position = value;
     }
 
+    public Vector2f CollisionCenter => Position + collisionOffset;
+
     public virtual FloatRect Bounds => sprite.GetGlobalBounds();
 
     public virtual void Create(Scene scene)
@@ -104,7 +108,7 @@ public abstract class Entity
     {
         CircleShape shape = new CircleShape(CollisionRadius);
         shape.Origin = new Vector2f(CollisionRadius, CollisionRadius);
-        shape.Position = Position;
+        shape.Position = CollisionCenter;
         shape.FillColor = Color.Transparent;
         shape.OutlineColor = Color.Red;
         shape.OutlineThickness = 1f;
@@ -115,9 +119,7 @@ public abstract class Entity
     {
         target.Draw(sprite);
 
-        #if DEBUG
         DrawDebugHitbox(target);
-        #endif
     }
 
     protected virtual void CollisionCheck(Scene scene)

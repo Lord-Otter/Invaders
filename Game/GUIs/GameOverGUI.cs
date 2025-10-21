@@ -6,19 +6,15 @@ using Invaders;
 
 namespace Invaders;
 
-public class MainMenuGUI : GUIBase
+public class GameOverGUI : GUIBase
 {
     private readonly SceneManager sceneManager;
 
     // Fonts
-    private Font titleFont = null!;
     private Font font = null!;
 
     // Texts
-    private Text titleText = null!;
-    private Text playText = null!;
-    private Text highscoresText = null!;
-    private Text quitText = null!;
+    private Text gameOverText = null!;
 
     // Colors
     private Color titleColor = new Color(10, 10, 10);
@@ -29,14 +25,13 @@ public class MainMenuGUI : GUIBase
     private bool confirmQuit = false;
 
 
-    public MainMenuGUI(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene, window)
+    public GameOverGUI(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene, window)
     {
         this.sceneManager = sceneManager;
     }
 
     public override void OnEnter()
     {
-        titleFont = scene.AssetManager.LoadFont("data-control");
         font = scene.AssetManager.LoadFont("prototype");
 
         CreateTexts();
@@ -50,22 +45,12 @@ public class MainMenuGUI : GUIBase
 
     private void CreateTexts()
     {
-        titleText = MakeText("INVADERS", titleFont, 150, titleColor,
-                        Program.screenW / 2f, 200);
-
-        playText = MakeText("Play", font, 50, defaultColor,
-                        Program.screenW / 2f, Program.screenH - 300);
-
-        highscoresText = MakeText("Highscores", font, 50, defaultColor,
-                        Program.screenW / 2f, Program.screenH - 250);
-
-        quitText = MakeText("Quit", font, 50, defaultColor,
-                        Program.screenW / 2f, Program.screenH - 200);
+        
     }
 
     public override void Update(float deltaTime)
     {
-        playText.FillColor = IsMouseOver(playText) ? hoverColor : defaultColor;
+        /*playText.FillColor = IsMouseOver(playText) ? hoverColor : defaultColor;
         highscoresText.FillColor = IsMouseOver(highscoresText) ? hoverColor : defaultColor;
         quitText.FillColor = IsMouseOver(quitText) ? hoverColor : defaultColor;
 
@@ -76,20 +61,20 @@ public class MainMenuGUI : GUIBase
                 quitText = MakeText("Quit", font, 50, defaultColor, Program.screenW / 2f, Program.screenH - 200);
                 confirmQuit = false;
             }
-        }
+        }*/
     }
 
     public override void Render(RenderTarget target)
     {
-        target.Draw(titleText);
+        /*target.Draw(titleText);
         target.Draw(playText);
         target.Draw(highscoresText);
-        target.Draw(quitText);
+        target.Draw(quitText);*/
     }
 
     protected override void OnMousePressed(object? sender, MouseButtonEventArgs e)
     {
-        if (IsMouseOver(playText))
+        /*if (IsMouseOver(playText))
         {
             sceneManager.LoadScene(new GameScene(scene, sceneManager, window));
         }
@@ -109,6 +94,6 @@ public class MainMenuGUI : GUIBase
             {
                 window.Close();
             }
-        }
+        }*/
     }
 }

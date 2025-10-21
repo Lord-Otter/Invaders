@@ -21,8 +21,9 @@ public class EnemyShip : Actor
     {
         this.gameManager = gameManager;
 
-        health = 20;
+        health = 40;
         maxHealth = health;
+        pointValue = 10;
         damage = 1;
         speed = 125f;
 
@@ -59,6 +60,7 @@ public class EnemyShip : Actor
     public override void OnDestroy(Scene scene)
     {
         gameManager.enemyShipCounter--;
+        gameManager.PointUpdate(pointValue);
         Console.WriteLine($"--{gameManager.enemyShipCounter}");
     }
 

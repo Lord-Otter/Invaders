@@ -10,13 +10,16 @@ public class GameManager
     private readonly SceneManager sceneManager;
     private readonly RenderWindow window;
     private readonly Scene scene;
-    private readonly GameGUI gui;
+    public readonly GameGUI gui;
 
     private float elapsedTime;
     private float minSpawnCooldown = 3;
     private float maxSpawnCooldown = 6;
     public int enemyShipCounter;
     public int enemyUFOCounter;
+    private int hardCap = 100;
+    private int currentScore;
+    private bool gameOver;
 
     private readonly Random rng = new Random();
     private float enemySpawnTimer = 1f;
@@ -42,13 +45,23 @@ public class GameManager
 
     public void HealthUpdate(int currentHealth)
     {
-        
+        if(currentHealth <= 0)
+        {
+            sceneManager.LoadScene(new GameOverScene(scene, sceneManager, window, currentScore));
+        }
+        gui.UpdateHealthBar(currentHealth);
+    }
+
+    public void PointUpdate(int pointValue)
+    {
+        currentScore += pointValue;
+        gui.UpdateScoreText(currentScore);
     }
 
     private void Spawner(float deltaTime)
     {
         enemySpawnTimer -= deltaTime;
-        if(enemySpawnTimer <= 0f)
+        if(enemySpawnTimer <= 0f && (enemyShipCounter + enemyUFOCounter <= hardCap))
         {
             SpawnEnemyShip();
             enemySpawnTimer = (float)(new Random().NextDouble() * (maxSpawnCooldown - minSpawnCooldown) + minSpawnCooldown);

@@ -39,6 +39,7 @@ public class Player : Actor
         sprite.TextureRect = new IntRect(0, 0, 100, 76);
         base.Create(scene);
         CollisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height) * 0.4f;
+        gameManger.HealthUpdate(health);
     }
 
     public override void Update(Scene scene, float deltaTime)
