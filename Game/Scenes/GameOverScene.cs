@@ -1,28 +1,21 @@
 using SFML.Graphics;
-using SFML.Window;
-using SFML.System;
 
 namespace Invaders;
 
 public class GameOverScene : SceneBase
 {
-    private readonly SceneManager sceneManager;
-    private readonly RenderWindow window;
-    private GameOverGUI gui = null!;
+    private readonly GameOverGUI gui = null!;
 
     private int playerScore;
 
     public GameOverScene(Scene scene, SceneManager sceneManager, RenderWindow window, int currentScore) : base(scene)
     {
-        this.sceneManager = sceneManager;
-        this.window = window;
-
+        gui = new GameOverGUI(scene, sceneManager, window, playerScore);
         playerScore = currentScore;
     }
 
-    public override void OnEnter()
+    public override void OnEnter() 
     {
-        gui = new GameOverGUI(scene, sceneManager, window, playerScore);
         gui.OnEnter();
     }
 

@@ -31,9 +31,9 @@ public abstract class GUIBase
         this.window = window;
         this.sceneManager = sceneManager;
 
-        dataFont = scene.AssetManager.LoadFont("data-control");
-        protoFont = scene.AssetManager.LoadFont("prototype");
-        sprite.Texture = scene.AssetManager.LoadTexture("icon");
+        dataFont = scene.assetManager.LoadFont("data-control");
+        protoFont = scene.assetManager.LoadFont("prototype");
+        sprite.Texture = scene.assetManager.LoadTexture("icon");
     }
 
     public virtual void OnEnter() { }

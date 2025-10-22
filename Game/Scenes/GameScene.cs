@@ -1,28 +1,27 @@
 using SFML.Graphics;
 using SFML.Window;
-using SFML.System;
+
 
 namespace Invaders;
 
 public class GameScene : SceneBase
 {
-    private readonly SceneManager sceneManager;
     private readonly RenderWindow window;
-    private GameGUI gui = null!;
-    private GameManager gameManager = null!;
+    private readonly GameGUI gui = null!;
+    private readonly GameManager gameManager = null!;
     private bool isPaused = false;
 
     public GameScene(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene)
     {
-        this.sceneManager = sceneManager;
+        gui = new GameGUI(scene, sceneManager, window, this);
+        gameManager = new GameManager(scene, sceneManager, window, gui);
         this.window = window;
     }
 
     public override void OnEnter()
     {
-        gui = new GameGUI(scene, sceneManager, window, this);
         gui.OnEnter();
-        gameManager = new GameManager(scene, sceneManager, window, gui);
+        
         gameManager.Initialize();
 
         window.KeyPressed += OnKeyPressed;

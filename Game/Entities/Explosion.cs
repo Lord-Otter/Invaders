@@ -1,6 +1,5 @@
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
@@ -22,7 +21,7 @@ public class Explosion : Entity
     {
         sprite.TextureRect = new IntRect(0, 90, 125, 125);
         base.Create(scene);
-        scene.AssetManager.PlaySound("explosion");
+        scene.assetManager.PlaySound("explosion");
     }
 
     public override void Update(Scene scene, float deltaTime)

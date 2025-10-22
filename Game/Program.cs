@@ -9,13 +9,13 @@ using SFML.Window;
 
 namespace Invaders;
 
-class Program
+public class Program
 {
     public const int screenW = 800;
     public const int screenH = 1000;
     public static float timeScale = 1f;
 
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         using RenderWindow window = new RenderWindow(new VideoMode(screenW, screenH), "Invaders", Styles.Default);
         View gameView = new View(new FloatRect(0, 0, screenW, screenH));

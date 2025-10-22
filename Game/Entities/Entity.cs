@@ -69,7 +69,7 @@ public abstract class Entity
 
     public virtual void Create(Scene scene)
     {
-        sprite.Texture = scene.AssetManager.LoadTexture(textureName);
+        sprite.Texture = scene.assetManager.LoadTexture(textureName);
         sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height / 2f);
         collisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height) * 0.5f;
     }

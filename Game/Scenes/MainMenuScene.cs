@@ -1,26 +1,19 @@
 using SFML.Graphics;
-using SFML.Window;
-using SFML.System;
-using System.Collections.Concurrent;
+
 
 namespace Invaders;
 
 public class MainMenuScene : SceneBase
 {
-    private readonly SceneManager sceneManager;
-    private readonly RenderWindow window;
-
-    private MainMenuGUI gui = null!;
+    private readonly MainMenuGUI gui = null!;
 
     public MainMenuScene(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene)
     {
-        this.sceneManager = sceneManager;
-        this.window = window;
+        gui = new MainMenuGUI(scene, sceneManager, window);
     }
 
     public override void OnEnter()
     {
-        gui = new MainMenuGUI(scene, sceneManager, window);
         gui.OnEnter();
     }
 
@@ -33,7 +26,7 @@ public class MainMenuScene : SceneBase
     {
         gui.Update(deltaTime);
     }
-    
+
     public override void Render(RenderTarget target)
     {
         gui.Render(target);

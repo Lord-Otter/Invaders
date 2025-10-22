@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices.Marshalling;
-using Invaders;
 using SFML.Graphics;
 using SFML.Window;
 

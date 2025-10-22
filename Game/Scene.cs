@@ -1,8 +1,5 @@
-using System.Diagnostics.Tracing;
-using System.Runtime.InteropServices;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
@@ -10,8 +7,7 @@ namespace Invaders;
 public sealed class Scene
 {
     private List<Entity> entities = new List<Entity>();
-    public readonly AssetManager AssetManager = new AssetManager();
-    //public readonly EventManager eventManager = new EventManager();
+    public readonly AssetManager assetManager = new AssetManager();
 
     public void Spawn(Entity entity, Vector2f? position = null)
     {
