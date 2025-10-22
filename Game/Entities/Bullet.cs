@@ -1,16 +1,12 @@
-using System.Diagnostics;
-using System.Reflection;
-using Invaders;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
 
 public class Bullet : Entity
 {
-    private Random rng = new Random();
+    private readonly Random rng = new Random();
 
     public Bullet(Entity source, int damage) : base("invaders", source.tag)
     {
@@ -31,7 +27,7 @@ public class Bullet : Entity
         sprite.TextureRect = new IntRect(690 + (9 * offset), 0, 9, 36);
         base.Create(scene);
         sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height * 0.1f);
-        CollisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height / 5) * 0.5f;
+        collisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height / 5) * 0.5f;
         if (tag == "Ally")
         {
             collisionOffset = new Vector2f(0, sprite.TextureRect.Height * rng.Next(1, 10) / 10f);
@@ -40,6 +36,7 @@ public class Bullet : Entity
 
     public override void OnDestroy(Scene scene)
     {
+        
         scene.Spawn(new HitEffect(this));
     }
 

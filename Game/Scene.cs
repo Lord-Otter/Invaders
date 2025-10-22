@@ -73,7 +73,7 @@ public sealed class Scene
             float distanceX = self.CollisionCenter.X - other.CollisionCenter.X;
             float distanceY = self.CollisionCenter.Y - other.CollisionCenter.Y;
             float distanceSq = distanceX * distanceX + distanceY * distanceY;
-            float combinedRadius = self.CollisionRadius + other.CollisionRadius;
+            float combinedRadius = self.collisionRadius + other.collisionRadius;
 
             if (distanceSq <= combinedRadius * combinedRadius)
                 yield return other;

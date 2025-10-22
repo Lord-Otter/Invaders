@@ -8,7 +8,7 @@ namespace Invaders;
 
 public class HitEffect : Entity
 {
-    private Entity source;
+    private readonly Entity source;
     private float lifeTime = 0.1f;
     public HitEffect(Entity source) : base("invaders", "Background")
     {

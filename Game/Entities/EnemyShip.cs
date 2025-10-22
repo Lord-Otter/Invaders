@@ -1,15 +1,12 @@
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
 
 public class EnemyShip : Actor
 {
-    private GameManager gameManager;
+    private readonly GameManager gameManager;
 
     private static readonly Random rngShip = new Random();
     private static readonly Random rngShoot = new Random();
@@ -23,7 +20,6 @@ public class EnemyShip : Actor
         this.gameManager = gameManager;
 
         health = 40;
-        maxHealth = health;
         pointValue = 100;
         damage = 1;
         speed = 125f;
@@ -63,8 +59,6 @@ public class EnemyShip : Actor
         gameManager.enemyShipCounter--;
         gameManager.enemiesKilledCounter++;
         gameManager.PointUpdate(pointValue);
-        Console.WriteLine($"--{gameManager.enemyShipCounter}");
-        Console.WriteLine($"++{gameManager.enemiesKilledCounter}");
     }
 
     protected override void Shooting(Scene scene, float deltaTime)
@@ -72,7 +66,7 @@ public class EnemyShip : Actor
         base.Shooting(scene, deltaTime);
         if (shootTimer <= 0)
         {
-            base.Shoot(scene, new Vector2f(0, 40));
+            base.Shoot(scene, new Vector2f(0, 40));            
             shootTimer = (float)(rngShoot.NextDouble() * (maxShootCooldown - minShootCooldown) + minShootCooldown);
         }
     }

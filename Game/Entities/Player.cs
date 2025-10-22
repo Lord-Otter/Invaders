@@ -1,4 +1,3 @@
-using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -9,7 +8,7 @@ namespace Invaders;
 
 public class Player : Actor
 {
-    private GameManager gameManger;
+    private readonly GameManager gameManger;
     private Vector2f playerDirection = new Vector2f(0, -1);
     private float iFramesTimer = 0f;
     private float iFramesDuration = 3f;
@@ -19,7 +18,6 @@ public class Player : Actor
         this.gameManger = gameManager;
 
         health = 3;
-        maxHealth = health;
         damage = 3;
         speed = 400f;
 
@@ -39,7 +37,7 @@ public class Player : Actor
     {
         sprite.TextureRect = new IntRect(0, 0, 100, 76);
         base.Create(scene);
-        CollisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height) * 0.4f;
+        collisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height) * 0.4f;
         gameManger.HealthUpdate(health);
     }
 
@@ -85,11 +83,6 @@ public class Player : Actor
         base.CollisionCheck(scene);
     }
 
-    public override void OnDestroy(Scene scene)
-    {
-        
-    }
-
     protected override void Shooting(Scene scene, float deltaTime)
     {
         if (shootTimer > 0)
@@ -101,7 +94,6 @@ public class Player : Actor
         {
             base.Shoot(scene, new Vector2f(-25, 20));
             base.Shoot(scene, new Vector2f(25, 20));
-            //Play shooting sounds effect
             shootTimer = shootCooldown;
         }
     }

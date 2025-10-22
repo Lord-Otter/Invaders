@@ -1,8 +1,5 @@
-using System.ComponentModel;
-using System.Net;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
@@ -10,11 +7,10 @@ namespace Invaders;
 public abstract class Entity
 {
     public string tag { get; set; }
-    protected Sprite sprite = new Sprite();
-    private string textureName;
-    protected int health = 1, maxHealth = 1;
+    protected readonly Sprite sprite = new Sprite();
+    private readonly string textureName;
+    protected int health = 1;
     protected int pointValue = 0;
-    protected int damageTakenBuffer;
     protected int damage;
     public bool isDead;
 
@@ -22,7 +18,7 @@ public abstract class Entity
     private Vector2f movementDirection = new Vector2f(0f, -1f);
     private Vector2f facingDirection = new Vector2f(0f, -1f);
 
-    public float CollisionRadius { get; protected set; }
+    public float collisionRadius { get; protected set; }
     protected Vector2f collisionOffset = new Vector2f(0, 0);
 
     protected Entity(string textureName, string tag)
@@ -71,13 +67,11 @@ public abstract class Entity
 
     public Vector2f CollisionCenter => Position + collisionOffset;
 
-    public virtual FloatRect Bounds => sprite.GetGlobalBounds();
-
     public virtual void Create(Scene scene)
     {
         sprite.Texture = scene.AssetManager.LoadTexture(textureName);
         sprite.Origin = new Vector2f(sprite.TextureRect.Width / 2f, sprite.TextureRect.Height / 2f);
-        CollisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height) * 0.5f;
+        collisionRadius = MathF.Max(sprite.TextureRect.Width, sprite.TextureRect.Height) * 0.5f;
     }
 
     public virtual void OnDestroy(Scene scene) { }
@@ -92,34 +86,15 @@ public abstract class Entity
     
     public virtual void IsAliveCheck()
     {
-        if (damageTakenBuffer > 0)
-        {
-            health -= damageTakenBuffer;
-            damageTakenBuffer = 0;
-        }
-
         if (health <= 0)
         {
             isDead = true;
         }
     }
 
-    public virtual void DrawDebugHitbox(RenderTarget target)
-    {
-        CircleShape shape = new CircleShape(CollisionRadius);
-        shape.Origin = new Vector2f(CollisionRadius, CollisionRadius);
-        shape.Position = CollisionCenter;
-        shape.FillColor = Color.Transparent;
-        shape.OutlineColor = Color.Red;
-        shape.OutlineThickness = 1f;
-        target.Draw(shape);
-    }
-
     public virtual void Render(RenderTarget target)
     {
         target.Draw(sprite);
-
-        //DrawDebugHitbox(target);
     }
 
     protected virtual void CollisionCheck(Scene scene)

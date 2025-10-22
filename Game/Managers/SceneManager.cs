@@ -1,7 +1,5 @@
-using System.Text;
-using Invaders;
 using SFML.Graphics;
-using SFML.System;
+
 
 namespace Invaders;
 

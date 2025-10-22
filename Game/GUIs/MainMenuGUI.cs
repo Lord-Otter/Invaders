@@ -1,44 +1,27 @@
 using SFML.Graphics;
 using SFML.Window;
-using SFML.System;
-using Invaders;
 
 
 namespace Invaders;
 
 public class MainMenuGUI : GUIBase
 {
-    private readonly SceneManager sceneManager;
-
-    // Fonts
-    private Font titleFont = null!;
-    private Font font = null!;
-
     // Texts
     private Text titleText = null!;
     private Text playText = null!;
     private Text highscoresText = null!;
     private Text quitText = null!;
 
-    // Colors
-    private Color titleColor = new Color(10, 10, 10);
-    private Color defaultColor = new Color(30, 30, 30);
-    private Color hoverColor = new Color(200, 200, 200);
-
     // Misc.
     private bool confirmQuit = false;
 
-
-    public MainMenuGUI(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene, window)
+    public MainMenuGUI(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene, sceneManager, window)
     {
-        this.sceneManager = sceneManager;
+        
     }
 
     public override void OnEnter()
     {
-        titleFont = scene.AssetManager.LoadFont("data-control");
-        font = scene.AssetManager.LoadFont("prototype");
-
         CreateTexts();
         window.MouseButtonPressed += OnMousePressed;
     }
@@ -48,32 +31,32 @@ public class MainMenuGUI : GUIBase
         window.MouseButtonPressed -= OnMousePressed;
     }
 
-    private void CreateTexts()
+    protected override void CreateTexts()
     {
-        titleText = MakeText("INVADERS", titleFont, 150, titleColor,
+        titleText = MakeText("INVADERS", dataFont, 150, black,
                         Program.screenW / 2f, 200);
 
-        playText = MakeText("Play", font, 50, defaultColor,
+        playText = MakeText("Play", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 300);
 
-        highscoresText = MakeText("Highscores", font, 50, defaultColor,
+        highscoresText = MakeText("Highscores", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 250);
 
-        quitText = MakeText("Quit", font, 50, defaultColor,
+        quitText = MakeText("Quit", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 200);
     }
 
     public override void Update(float deltaTime)
     {
-        playText.FillColor = IsMouseOver(playText) ? hoverColor : defaultColor;
-        highscoresText.FillColor = IsMouseOver(highscoresText) ? hoverColor : defaultColor;
-        quitText.FillColor = IsMouseOver(quitText) ? hoverColor : defaultColor;
+        playText.FillColor = IsMouseOver(playText) ? nearWhite : darkGrey;
+        highscoresText.FillColor = IsMouseOver(highscoresText) ? nearWhite : darkGrey;
+        quitText.FillColor = IsMouseOver(quitText) ? nearWhite : darkGrey;
 
         if (confirmQuit)
         {
             if (!IsMouseOver(quitText))
             {
-                quitText = MakeText("Quit", font, 50, defaultColor, Program.screenW / 2f, Program.screenH - 200);
+                quitText = MakeText("Quit", protoFont, 50, darkGrey, Program.screenW / 2f, Program.screenH - 200);
                 confirmQuit = false;
             }
         }
@@ -101,7 +84,7 @@ public class MainMenuGUI : GUIBase
         {
             if (!confirmQuit)
             {
-                quitText = MakeText("Are you sure?", font, 30, defaultColor,
+                quitText = MakeText("Are you sure?", protoFont, 30, darkGrey,
                                 Program.screenW / 2f, Program.screenH - 200);
                 confirmQuit = true;
             }

@@ -1,6 +1,4 @@
-using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
@@ -17,9 +15,7 @@ public abstract class Actor : Entity
 
     public override void Update(Scene scene, float deltaTime)
     {
-        base.Update(scene, deltaTime);
-
-        
+        base.Update(scene, deltaTime);     
     }
     
 

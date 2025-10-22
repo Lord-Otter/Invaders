@@ -1,6 +1,5 @@
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 
 namespace Invaders;
@@ -10,15 +9,13 @@ public class GameManager
     private readonly SceneManager sceneManager;
     private readonly RenderWindow window;
     private readonly Scene scene;
-    public readonly GameGUI gui;
+    private readonly GameGUI gui;
 
-    private float elapsedTime;
     private float minSpawnCooldown;
     private float maxSpawnCooldown;
     public int enemyShipCounter;
-    public int enemyUFOCounter;
     public int enemiesKilledCounter;
-    private int enemyCap = 20;
+    private readonly int enemyCap = 20;
     private int currentScore;
     private float scoreTimer;
 
@@ -34,11 +31,9 @@ public class GameManager
     }
     public void Initialize()
     {
-        elapsedTime = 0;
         scoreTimer = 0;
         currentScore = 0;
         enemyShipCounter = 0;
-        enemyUFOCounter = 0;
         minSpawnCooldown = 2;
         maxSpawnCooldown = 5;
         enemiesKilledCounter = 0;
@@ -49,7 +44,6 @@ public class GameManager
 
     public void Update(float deltaTime)
     {
-        elapsedTime += deltaTime;
         IncScoreTimer(deltaTime);
         UpdateSpawnRate();
         Spawner(deltaTime);
@@ -94,7 +88,7 @@ public class GameManager
     private void Spawner(float deltaTime)
     {
         enemySpawnTimer -= deltaTime;
-        if(enemySpawnTimer <= 0f && (enemyShipCounter + enemyUFOCounter < enemyCap))
+        if(enemySpawnTimer <= 0f && (enemyShipCounter < enemyCap))
         {
             SpawnEnemyShip();
             enemySpawnTimer = (float)(new Random().NextDouble() * (maxSpawnCooldown - minSpawnCooldown) + minSpawnCooldown);

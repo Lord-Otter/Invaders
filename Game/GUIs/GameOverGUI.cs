@@ -2,20 +2,12 @@ using SFML.Graphics;
 using SFML.Window;
 using System.Text.Json;
 using SFML.System;
-using Invaders;
-using System.Numerics;
-using System.Formats.Asn1;
 
 
 namespace Invaders;
 
 public class GameOverGUI : GUIBase
 {
-    private readonly SceneManager sceneManager;
-
-    // Fonts
-    private Font font = null!;
-
     // Texts
     private Text gameOverText = null!;
     private Text yourScoreText = null!;
@@ -29,11 +21,6 @@ public class GameOverGUI : GUIBase
     private RectangleShape nameBox = null!;
     private Text boxText = null!;
 
-    // Colors
-    private Color textColor = new Color(10, 10, 10);
-    private Color defaultColor = new Color(30, 30, 30);
-    private Color hoverColor = new Color(200, 200, 200);
-
     // Misc.
     private bool confirmQuit = false;
     private bool isNameBoxActive = false;
@@ -45,16 +32,13 @@ public class GameOverGUI : GUIBase
         
     private int playerScore;
 
-    public GameOverGUI(Scene scene, SceneManager sceneManager, RenderWindow window, int playerScore) : base(scene, window)
+    public GameOverGUI(Scene scene, SceneManager sceneManager, RenderWindow window, int playerScore) : base(scene, sceneManager, window)
     {
-        this.sceneManager = sceneManager;
         this.playerScore = playerScore;
     }
 
     public override void OnEnter()
     {
-        font = scene.AssetManager.LoadFont("prototype");
-
         CreateTexts();
         window.MouseButtonPressed += OnMousePressed;
         window.TextEntered += OnTextEntered;
@@ -66,45 +50,45 @@ public class GameOverGUI : GUIBase
         window.TextEntered -= OnTextEntered;
     }
 
-    private void CreateTexts()
+    protected override void CreateTexts()
     {
-        gameOverText = MakeText("Game Over", font, 75, textColor,
+        gameOverText = MakeText("Game Over", protoFont, 75, black,
                         Program.screenW / 2f, 225);
 
-        yourScoreText = MakeText($"Your Score: {playerScore}", font, 50, textColor,
+        yourScoreText = MakeText($"Your Score: {playerScore}", protoFont, 50, black,
                         Program.screenW / 2f, 300);
 
         if (playerScore > 0)
         {
             MakeBox(new Color(200, 200, 200), new Color(30, 30, 30));
 
-            boxText = MakeText("Enter Name", font, 30, new Color(50, 50, 50),
+            boxText = MakeText("Enter Name", protoFont, 30, new Color(50, 50, 50),
                         Program.screenW / 2f, nameBox.Position.Y);
 
-            submitText = MakeText("Submit", font, 50, defaultColor,
+            submitText = MakeText("Submit", protoFont, 50, darkGrey,
                             Program.screenW / 2f, nameBox.Position.Y + 80);
         }
         else
         {
             MakeBox(new Color(70, 70, 70), new Color(40, 40, 40));
 
-            boxText = MakeText("", font, 30, new Color(50, 50, 50),
+            boxText = MakeText("", protoFont, 30, new Color(50, 50, 50),
                         Program.screenW / 2f, nameBox.Position.Y);
 
-            submitText = MakeText("No score to submit", font, 50, textColor,
+            submitText = MakeText("No score to submit", protoFont, 50, black,
                             Program.screenW / 2f, nameBox.Position.Y + 80);
         }
 
-        warningText = MakeText("", font, 30, new Color(0, 0, 0, 150),
+        warningText = MakeText("", protoFont, 30, new Color(0, 0, 0, 150),
                         Program.screenW / 2f, Program.screenH / 2f + 20);
 
-        retryText = MakeText("Retry", font, 50, defaultColor,
+        retryText = MakeText("Retry", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 300);
 
-        mainMenuText = MakeText("Main Menu", font, 50, defaultColor,
+        mainMenuText = MakeText("Main Menu", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 250);
 
-        quitText = MakeText("Quit", font, 50, defaultColor,
+        quitText = MakeText("Quit", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 200);
     }
 
@@ -212,13 +196,13 @@ public class GameOverGUI : GUIBase
 
     public override void Update(float deltaTime)
     {
-        retryText.FillColor = IsMouseOver(retryText) ? hoverColor : defaultColor;
-        mainMenuText.FillColor = IsMouseOver(mainMenuText) ? hoverColor : defaultColor;
-        quitText.FillColor = IsMouseOver(quitText) ? hoverColor : defaultColor;
+        retryText.FillColor = IsMouseOver(retryText) ? nearWhite : darkGrey;
+        mainMenuText.FillColor = IsMouseOver(mainMenuText) ? nearWhite : darkGrey;
+        quitText.FillColor = IsMouseOver(quitText) ? nearWhite : darkGrey;
 
         if (playerScore > 0)
         {
-            submitText.FillColor = IsMouseOver(submitText) ? hoverColor : defaultColor;
+            submitText.FillColor = IsMouseOver(submitText) ? nearWhite : darkGrey;
             nameBox.FillColor = isNameBoxActive ? new Color(200, 200, 200) : new Color(150, 150, 150);
             nameBox.OutlineColor = isNameBoxActive ? new Color(30, 30, 30) : new Color(40, 40, 40);
         }
@@ -227,7 +211,7 @@ public class GameOverGUI : GUIBase
         {
             if (!IsMouseOver(quitText))
             {
-                quitText = MakeText("Quit", font, 50, defaultColor, Program.screenW / 2f, Program.screenH - 200);
+                quitText = MakeText("Quit", protoFont, 50, darkGrey, Program.screenW / 2f, Program.screenH - 200);
                 confirmQuit = false;
             }
         }
@@ -260,12 +244,12 @@ public class GameOverGUI : GUIBase
                 SaveScore();
                 SortList();
 
-                warningText = MakeText("Score Saved!", font, 15, new Color(40, 40, 40),
+                warningText = MakeText("Score Saved!", protoFont, 15, new Color(40, 40, 40),
                                 Program.screenW / 2f, nameBox.Position.Y + 45);
             }
             else
             {
-                warningText = MakeText("Enter a name to save score!", font, 15, new Color(40, 40, 40),
+                warningText = MakeText("Enter a name to save score!", protoFont, 15, new Color(40, 40, 40),
                                 Program.screenW / 2f, nameBox.Position.Y + 45);
             }
         }
@@ -281,7 +265,7 @@ public class GameOverGUI : GUIBase
         {
             if (!confirmQuit)
             {
-                quitText = MakeText("Are you sure?", font, 30, defaultColor,
+                quitText = MakeText("Are you sure?", protoFont, 30, darkGrey,
                                 Program.screenW / 2f, Program.screenH - 200);
                 confirmQuit = true;
             }

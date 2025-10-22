@@ -2,7 +2,6 @@
 // Prototype Font by Justin Callaghan https://www.1001freefonts.com/prototype.font
 // Data Control Font by Vic Fieger https://www.1001freefonts.com/data-control.font
 
-using Invaders;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;

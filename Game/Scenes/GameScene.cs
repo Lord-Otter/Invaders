@@ -20,7 +20,7 @@ public class GameScene : SceneBase
 
     public override void OnEnter()
     {
-        gui = new GameGUI(scene, sceneManager, this, window);
+        gui = new GameGUI(scene, sceneManager, window, this);
         gui.OnEnter();
         gameManager = new GameManager(scene, sceneManager, window, gui);
         gameManager.Initialize();

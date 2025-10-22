@@ -7,7 +7,6 @@ namespace Invaders;
 
 public class Explosion : Entity
 {
-    //private float lifeTime = 0.5f;
     private float frameTimer;
     private int frame;
 
@@ -23,6 +22,7 @@ public class Explosion : Entity
     {
         sprite.TextureRect = new IntRect(0, 90, 125, 125);
         base.Create(scene);
+        scene.AssetManager.PlaySound("explosion");
     }
 
     public override void Update(Scene scene, float deltaTime)

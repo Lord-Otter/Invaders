@@ -2,19 +2,11 @@ using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
 using System.Text.Json;
-using Invaders;
-using System.Runtime.InteropServices;
 
 namespace Invaders;
 
 public class HighscoresGUI : GUIBase
 {
-    private readonly SceneManager sceneManager;
-
-    // Fonts
-    private Font font = null!;
-    private Font arrowFont = null!;
-
     // Texts
     private Text titleText = null!;
     private Text backText = null!;
@@ -23,27 +15,19 @@ public class HighscoresGUI : GUIBase
     private Text pageNumberText = null!;
     private Text noScoresText = null!;
 
-    // Colors
-    private Color textColor = new Color(10, 10, 10);
-    private Color buttonColor = new Color(30, 30, 30);
-    private Color hoverColor = new Color(200, 200, 200);
-    private Color greyedOutColor = new Color(68, 50, 76);
-
     // Misc.
-    private List<Text> scoreTexts = new List<Text>();
+    private readonly List<Text> scoreTexts = new List<Text>();
     private record HighscoreEntry(string Name, int Score);
     private int currentPage = 1;
     private int maxPages = 0;
 
-    public HighscoresGUI(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene, window)
+    public HighscoresGUI(Scene scene, SceneManager sceneManager, RenderWindow window) : base(scene, sceneManager, window)
     {
-        this.sceneManager = sceneManager;
+        
     }
 
     public override void OnEnter()
     {
-        font = scene.AssetManager.LoadFont("prototype");
-        arrowFont = scene.AssetManager.LoadFont("data-control");
         CreateTexts();
         window.MouseButtonPressed += OnMousePressed;
     }
@@ -53,24 +37,24 @@ public class HighscoresGUI : GUIBase
         window.MouseButtonPressed -= OnMousePressed;
     }
 
-    private void CreateTexts()
+    protected override void CreateTexts()
     {
         ScoreList(currentPage, out maxPages);
         string pageText = $"{currentPage}/{maxPages}";
 
-        titleText = MakeText("Highscores!", font, 75, textColor,
+        titleText = MakeText("Highscores!", protoFont, 75, black,
                         Program.screenW / 2f, 200);
 
-        pageNumberText = MakeText(pageText, font, 50, textColor,
+        pageNumberText = MakeText(pageText, protoFont, 50, black,
                         Program.screenW / 2f, Program.screenH - 200);
 
-        rightArrow = MakeText(">", arrowFont, 75, buttonColor,
+        rightArrow = MakeText(">", dataFont, 75, darkGrey,
                         Program.screenW / 2f + 100, pageNumberText.Position.Y, new Vector2f(-1, 0));
 
-        leftArrow = MakeText("<", arrowFont, 75, buttonColor,
+        leftArrow = MakeText("<", dataFont, 75, darkGrey,
                         Program.screenW / 2f - 100, pageNumberText.Position.Y, new Vector2f(1, 0));
 
-        backText = MakeText("Back", font, 50, buttonColor,
+        backText = MakeText("Back", protoFont, 50, darkGrey,
                         Program.screenW / 2f, Program.screenH - 100);     
     }
 
@@ -82,7 +66,7 @@ public class HighscoresGUI : GUIBase
 
         if (!File.Exists(FilePath) || new FileInfo(FilePath).Length == 0)
         {
-            noScoresText = MakeText("List is empty!", font, 50, hoverColor,
+            noScoresText = MakeText("List is empty!", protoFont, 50, nearWhite,
                     Program.screenW / 2f, Program.screenH / 2f);
 
             scoreTexts.Add(noScoresText);
@@ -104,15 +88,15 @@ public class HighscoresGUI : GUIBase
                     continue;
                 }
 
-                Text nameText = MakeText(entry.Name, font, 50, textColor,
+                Text nameText = MakeText(entry.Name, protoFont, 50, black,
                         Program.screenW / 2f - 250f, 300 + (i - (10 * (pageNumber - 1)) - 1) * 50, new Vector2f(-1, 0));
                 scoreTexts.Add(nameText);
 
-                Text rankText = MakeText($"{i}.", font, 50, textColor,
+                Text rankText = MakeText($"{i}.", protoFont, 50, black,
                         nameText.Position.X - 15, nameText.Position.Y, new Vector2f(1, 0));
                 scoreTexts.Add(rankText);
 
-                Text scoreText = MakeText(entry.Score.ToString(), font, 50, textColor,
+                Text scoreText = MakeText(entry.Score.ToString(), protoFont, 50, black,
                         Program.screenW / 2f + 250, nameText.Position.Y, new Vector2f(1, 0));
                 scoreTexts.Add(scoreText);
             }
@@ -121,31 +105,31 @@ public class HighscoresGUI : GUIBase
 
             }
             string pageText = $"{currentPage}/{maxPages}";
-            pageNumberText = MakeText(pageText, font, 50, textColor,
+            pageNumberText = MakeText(pageText, protoFont, 50, black,
                     Program.screenW / 2f, Program.screenH - 200);
         }
     }
 
     public override void Update(float deltaTime)
     {
-        backText.FillColor = IsMouseOver(backText) ? hoverColor : buttonColor;
+        backText.FillColor = IsMouseOver(backText) ? nearWhite : darkGrey;
 
         if (currentPage == maxPages)
         {
-            rightArrow.FillColor = greyedOutColor;
+            rightArrow.FillColor = purpleish;
         }
         else
         {
-            rightArrow.FillColor = IsMouseOver(rightArrow) ? hoverColor : buttonColor;
+            rightArrow.FillColor = IsMouseOver(rightArrow) ? nearWhite : darkGrey;
         }
 
         if (currentPage == 1)
         {
-            leftArrow.FillColor = greyedOutColor;
+            leftArrow.FillColor = purpleish;
         }
         else
         {
-            leftArrow.FillColor = IsMouseOver(leftArrow) ? hoverColor : buttonColor;
+            leftArrow.FillColor = IsMouseOver(leftArrow) ? nearWhite : darkGrey;
         }
     }
 
