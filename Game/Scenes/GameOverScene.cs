@@ -6,12 +6,9 @@ public class GameOverScene : SceneBase
 {
     private readonly GameOverGUI gui = null!;
 
-    private int playerScore;
-
     public GameOverScene(Scene scene, SceneManager sceneManager, RenderWindow window, int currentScore) : base(scene)
     {
-        gui = new GameOverGUI(scene, sceneManager, window, playerScore);
-        playerScore = currentScore;
+        gui = new GameOverGUI(scene, sceneManager, window, currentScore);
     }
 
     public override void OnEnter() 
